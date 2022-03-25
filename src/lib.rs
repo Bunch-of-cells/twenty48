@@ -157,8 +157,11 @@ impl GameState {
         };
     }
 
-    fn is_full(&self) -> bool {
-        !self.0.iter().any(|&v| v == 0)
+    fn is_over(&self) -> bool {
+        if self.0.iter().any(|&v| v == 0) {
+            return false;
+        }
+        true
     }
 }
 
@@ -202,6 +205,13 @@ impl Game {
     pub fn step(&mut self, direction: Direction) {
         self.score += self.state.slide(direction);
         self.state.add_random_tile();
+    }
+
+    pub fn start<F>(mut self, mut f: F) -> usize where F: FnMut(&[usize; GameState::GRIDSIZE]) -> Direction {
+        while !self.state.is_over() {
+            self.step(f(&self.state.0));
+        }
+        self.score
     }
 }
 

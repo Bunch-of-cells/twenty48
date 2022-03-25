@@ -1,8 +1,12 @@
 use twenty48::{Game, Direction};
 
 fn main() {
-    let mut grid = Game::new();
+    let grid = Game::new();
     println!("{}", grid);
-    grid.step(Direction::Right);
-    println!("{}", grid);
+    grid.start(play);
+}
+
+fn play(grid: &[usize; 16]) -> Direction {
+    println!("{:?}", grid);
+    Direction::Up
 }
